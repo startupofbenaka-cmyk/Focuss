@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Focuss</title>
+    <script>
+      // GitHub Pages SPA redirect fallback:
+      // Preserves deep route when refreshing or directly visiting subpaths on GitHub Pages
+      var pathSegments = window.location.pathname.split('/').filter(Boolean);
+      // The last segment is usually the target route (e.g. "services", "work", "about", "contact")
+      var route = pathSegments[pathSegments.length - 1] || '';
+      var basePath = pathSegments.length > 1 ? '/' + pathSegments[0] : '';
+      
+      // Redirect to index.html with hash route
+      if (['services', 'work', 'about', 'contact'].indexOf(route.toLowerCase()) !== -1) {
+        window.location.replace(window.location.origin + basePath + '/#/' + route);
+      } else {
+        window.location.replace(window.location.origin + basePath + '/');
+      }
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

@@ -1,4 +1,10 @@
 import { ConceptProject } from '../types';
+import nexaImg from '../assets/images/nexa_fitness_1791392503369.jpg';
+import velaImg from '../assets/images/vela_fashion_1791392521921.jpg';
+import dentaloraImg from '../assets/images/dentalora_clinic_1791392534487.jpg';
+import forgeImg from '../assets/images/forge_saas_1791392552112.jpg';
+import lumenImg from '../assets/images/lumen_roast_1791392565006.jpg';
+import apexImg from '../assets/images/focuss_workspace_1791392484885.jpg';
 
 export const projectsData: ConceptProject[] = [
   {
@@ -18,7 +24,7 @@ export const projectsData: ConceptProject[] = [
       'Automated SMS lead confirmation workflow blueprint'
     ],
     expectedImpact: 'Projected 3.2x increase in free-trial bookings with reduced cost-per-lead through automated qualification.',
-    image: '/src/assets/images/nexa_fitness_1791392503369.jpg'
+    image: nexaImg
   },
   {
     id: 'vela-fashion',
@@ -37,7 +43,7 @@ export const projectsData: ConceptProject[] = [
       'Klaviyo post-purchase automated retention sequence'
     ],
     expectedImpact: 'Expected +48% uplift in average order value (AOV) driven by elevated brand perception and curated bundles.',
-    image: '/src/assets/images/vela_fashion_1791392521921.jpg'
+    image: velaImg
   },
   {
     id: 'dentalora-clinic',
@@ -56,7 +62,7 @@ export const projectsData: ConceptProject[] = [
       'Automated SMS booking confirmation & reminder pipeline'
     ],
     expectedImpact: 'Projected 65% reduction in appointment no-shows and capture of 24/7 self-service patient bookings.',
-    image: '/src/assets/images/dentalora_clinic_1791392534487.jpg'
+    image: dentaloraImg
   },
   {
     id: 'forge-saas',
@@ -75,7 +81,7 @@ export const projectsData: ConceptProject[] = [
       'Technical case study whitepaper layout design'
     ],
     expectedImpact: 'Accelerated qualified demo conversion with sub-5-minute automated inbound response time.',
-    image: '/src/assets/images/forge_saas_1791392552112.jpg'
+    image: forgeImg
   },
   {
     id: 'lumen-roast',
@@ -94,7 +100,7 @@ export const projectsData: ConceptProject[] = [
       'Subscription customer onboarding email sequence'
     ],
     expectedImpact: 'Establishment of predictable recurring monthly subscription volume alongside local retail.',
-    image: '/src/assets/images/lumen_roast_1791392565006.jpg'
+    image: lumenImg
   },
   {
     id: 'apex-living',
@@ -113,6 +119,6 @@ export const projectsData: ConceptProject[] = [
       'VIP investor brochure digital editorial design'
     ],
     expectedImpact: 'Direct capture of qualified high-ticket private viewing requests bypassing commercial aggregator fees.',
-    image: '/src/assets/images/focuss_workspace_1791392484885.jpg'
+    image: apexImg
   }
 ];

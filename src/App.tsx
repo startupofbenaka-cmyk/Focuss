@@ -20,26 +20,63 @@ export default function App() {
   const [activeProject, setActiveProject] = useState<ConceptProject | null>(null);
   const [selectedServiceForContact, setSelectedServiceForContact] = useState<string | undefined>(undefined);
 
-  // Parse path on initial load
-  useEffect(() => {
-    const parsePath = () => {
-      const path = window.location.pathname.toLowerCase().replace(/^\/|\/$/g, '');
-      if (!path || path === '') return 'home';
-      if (path === 'services') return 'services';
-      if (path === 'work' || path === 'portfolio') return 'work';
-      if (path === 'about') return 'about';
-      if (path === 'contact') return 'contact';
+  // Parse path or hash on initial load & updates (GitHub Pages friendly)
+  const parseCurrentRoute = (): PageId => {
+    // 1. Check URL query params (e.g., from 404.html redirect: ?p=/services)
+    const searchParams = new URLSearchParams(window.location.search);
+    const redirectParam = searchParams.get('p');
+    if (redirectParam) {
+      const cleanParam = redirectParam.toLowerCase().replace(/^\/|\/$/g, '');
+      if (cleanParam === 'services') return 'services';
+      if (cleanParam === 'work' || cleanParam === 'portfolio') return 'work';
+      if (cleanParam === 'about') return 'about';
+      if (cleanParam === 'contact') return 'contact';
+      if (!cleanParam) return 'home';
+    }
+
+    // 2. Check hash routing (e.g. #/services or #services)
+    const hash = window.location.hash.toLowerCase().replace(/^#\/?/, '').replace(/\/$/, '');
+    if (hash === 'services') return 'services';
+    if (hash === 'work' || hash === 'portfolio') return 'work';
+    if (hash === 'about') return 'about';
+    if (hash === 'contact') return 'contact';
+    if (hash === 'home' || hash === '') {
+      // If hash is explicitly home or empty, check pathname next
+    } else {
       return '404';
+    }
+
+    // 3. Check pathname (extract last relevant path segment to accommodate GitHub repo subpaths)
+    const pathSegments = window.location.pathname.toLowerCase().split('/').filter(Boolean);
+    if (pathSegments.length === 0) return 'home';
+
+    const lastSegment = pathSegments[pathSegments.length - 1];
+    if (lastSegment === 'services') return 'services';
+    if (lastSegment === 'work' || lastSegment === 'portfolio') return 'work';
+    if (lastSegment === 'about') return 'about';
+    if (lastSegment === 'contact') return 'contact';
+
+    // If path is just the repo name (e.g. /focuss-repo/)
+    if (pathSegments.length === 1 && !['services', 'work', 'about', 'contact'].includes(lastSegment)) {
+      return 'home';
+    }
+
+    return 'home';
+  };
+
+  useEffect(() => {
+    setCurrentPage(parseCurrentRoute());
+
+    const handleRouteChange = () => {
+      setCurrentPage(parseCurrentRoute());
     };
 
-    setCurrentPage(parsePath());
-
-    const handlePopState = () => {
-      setCurrentPage(parsePath());
+    window.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('hashchange', handleRouteChange);
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('hashchange', handleRouteChange);
     };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   // Update Page Title and Meta Description dynamically based on current page
@@ -84,10 +121,14 @@ export default function App() {
 
   const handleNavigate = (page: PageId) => {
     setCurrentPage(page);
-    const path = page === 'home' ? '/' : `/${page}`;
     try {
-      if (window.location.pathname !== path) {
-        window.history.pushState(null, '', path);
+      // Use hash-compatible routing for 100% GitHub Pages refresh support
+      if (page === 'home') {
+        if (window.location.hash) {
+          window.history.pushState(null, '', window.location.pathname);
+        }
+      } else {
+        window.location.hash = `#/${page}`;
       }
     } catch {
       // In sandboxed environments if pushState is restricted
